@@ -13,7 +13,7 @@ from insightface.utils import storage
 from insightface.app import FaceAnalysis
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 
 
 on_linux = sys.platform.startswith('linux')
@@ -44,8 +44,14 @@ detection_thresh = float(os.getenv("DETECTION_THRESH", "0.65"))
 # 设置下载模型URL
 storage.BASE_REPO_URL = 'https://github.com/kqstone/mt-photos-insightface-unofficial/releases/download/models'
 
+on_win = sys.platform.startswith('win')
+model_folder_path = '~/.insightface'
+if on_win :
+    current_folder = os.path.dirname(os.path.abspath(__file__))
+    model_folder_path = os.path.join(current_folder, "_insightface_root")
+
 # 初始化人脸识别器
-faceAnalysis = FaceAnalysis(providers=['CUDAExecutionProvider', 'CPUExecutionProvider'], allowed_modules=['detection', 'recognition'], name=recognition_model)
+faceAnalysis = FaceAnalysis(providers=['CUDAExecutionProvider', 'CPUExecutionProvider'],root=model_folder_path, allowed_modules=['detection', 'recognition'], name=recognition_model)
 faceAnalysis.prepare(ctx_id=0, det_thresh=detection_thresh, det_size=(640, 640))
 
 
