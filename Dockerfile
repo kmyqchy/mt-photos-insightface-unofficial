@@ -14,6 +14,7 @@ ENV RECOGNITION_MODEL=buffalo_l
 ENV DETECTION_THRESH=0.65
 EXPOSE 8066
 
-VOLUME ["/root/.insightface/models"]
+# VOLUME ["/root/.insightface/models"]
+COPY ./models /root/.insightface/models # 将模型文件复制到镜像内
 
 CMD [ "python3", "server.py" ]
